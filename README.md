@@ -11,7 +11,7 @@ npm install dtg-js
 ### Usage
 
 ```js
-const { toBase60, toJSDate } = require("dtg-js");
+import { toBase60, toJSDate } = from "dtg-js";
 
 console.log(toBase60(new Date()));
 
