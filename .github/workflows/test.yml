@@ -1,0 +1,44 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "**.js"
+      - ".github/workflows/*.yml"
+      - package.json
+
+jobs:
+  format:
+    name: Format Check
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install
+      - name: Check format
+        run: npm run prettier:check
+  build:
+    name: Testing
+    needs: format
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, ubuntu-slim]
+        node-version: [20, 22, 24]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - name: Run tests
+        run: npm test
