@@ -2,8 +2,14 @@
   "name": "dtg-js",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">= 20.0.0"
+  },
   "scripts": {
-    "test": "jest"
+    "prettier:check": "prettier --check .",
+    "prettier:fix": "prettier --write .",
+    "test": "vitest run"
   },
   "keywords": [
     "datetime"
@@ -12,7 +18,7 @@
   "license": "MIT",
   "description": "This library implements a date representation in base 60",
   "devDependencies": {
-    "jest": "29.7.0",
-    "prettier": "3.5.3"
+    "prettier": "3.8.1",
+    "vitest": "4.0.18"
   }
 }
