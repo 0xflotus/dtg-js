@@ -9,9 +9,7 @@ describe("dtg-js", () => {
   });
 
   test("invalid datetime object", () => {
-    expect(() => toBase60(null)).toThrow(
-      '"date" is not a valid Date object',
-    );
+    expect(() => toBase60(null)).toThrow('"date" is not a valid Date object');
   });
 
   test("convert datetime to base 60", () => {
