@@ -10,7 +10,7 @@ describe("dtg-js", () => {
 
   test("invalid datetime object", () => {
     expect(() => toBase60(null)).toThrow(
-      '"datetime" is not a valid Date object',
+      '"date" is not a valid Date object',
     );
   });
 
