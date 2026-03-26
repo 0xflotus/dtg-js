@@ -23,14 +23,7 @@ export const toJSDate = (base60) => {
     v[i] = val;
   }
 
-  return new Date(Date.UTC(
-    v[0] * 60 + v[1],
-    v[2],
-    v[3] + 1,
-    v[4],
-    v[5],
-    v[6]
-  ));
+  return new Date(Date.UTC(v[0] * 60 + v[1], v[2], v[3] + 1, v[4], v[5], v[6]));
 };
 
 export const toBase60 = (date) => {
