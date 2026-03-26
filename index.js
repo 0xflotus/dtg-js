@@ -1,21 +1,36 @@
 const TABLE = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx";
-const LOOKUP = Object.fromEntries([...TABLE].map((c, i) => [c, i]));
-const BASE60_REGEX = /^[0-9A-Za-x]{7}$/;
+
+const LOOKUP = new Uint8Array(128);
+for (let i = 0; i < TABLE.length; i++) {
+  LOOKUP[TABLE.charCodeAt(i)] = i;
+}
 
 export const toJSDate = (base60) => {
-  if (!BASE60_REGEX.test(base60)) {
-    throw new Error("It's not a valid base 60 string");
+  if (base60.length !== 7) {
+    throw new Error("Invalid base60 length");
   }
 
-  const m0 = LOOKUP[base60[0]];
-  const m1 = LOOKUP[base60[1]];
-  const m2 = LOOKUP[base60[2]];
-  const m3 = LOOKUP[base60[3]];
-  const m4 = LOOKUP[base60[4]];
-  const m5 = LOOKUP[base60[5]];
-  const m6 = LOOKUP[base60[6]];
+  const v = new Array(7);
 
-  return new Date(Date.UTC(m0 * 60 + m1, m2, m3 + 1, m4, m5, m6));
+  for (let i = 0; i < 7; i++) {
+    const code = base60.charCodeAt(i);
+    const val = LOOKUP[code];
+
+    if (val === 0 && base60[i] !== "0") {
+      throw new Error("Invalid character");
+    }
+
+    v[i] = val;
+  }
+
+  return new Date(Date.UTC(
+    v[0] * 60 + v[1],
+    v[2],
+    v[3] + 1,
+    v[4],
+    v[5],
+    v[6]
+  ));
 };
 
 export const toBase60 = (date) => {
@@ -25,13 +40,15 @@ export const toBase60 = (date) => {
 
   const year = date.getUTCFullYear();
 
-  return (
-    TABLE[Math.floor(year / 60)] +
-    TABLE[year % 60] +
-    TABLE[date.getUTCMonth()] +
-    TABLE[date.getUTCDate() - 1] +
-    TABLE[date.getUTCHours()] +
-    TABLE[date.getUTCMinutes()] +
-    TABLE[date.getUTCSeconds()]
-  );
+  const chars = new Array(7);
+
+  chars[0] = TABLE[(year / 60) | 0];
+  chars[1] = TABLE[year % 60];
+  chars[2] = TABLE[date.getUTCMonth()];
+  chars[3] = TABLE[date.getUTCDate() - 1];
+  chars[4] = TABLE[date.getUTCHours()];
+  chars[5] = TABLE[date.getUTCMinutes()];
+  chars[6] = TABLE[date.getUTCSeconds()];
+
+  return chars.join("");
 };
