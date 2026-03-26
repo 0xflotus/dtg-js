@@ -58,7 +58,7 @@ describe("dtg-js", () => {
     const TABLE =
       "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx";
     for (let c of TABLE) {
-      const val = toJSDate("0".repeat(6) + c); // letzte Stelle variieren
+      const val = toJSDate("0".repeat(6) + c);
       expect(val instanceof Date).toBe(true);
     }
   });
