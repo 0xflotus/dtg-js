@@ -1,4 +1,4 @@
-const TABLE = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx';
+const TABLE = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx";
 const LOOKUP = Object.fromEntries([...TABLE].map((c, i) => [c, i]));
 const BASE60_REGEX = /^[0-9A-Za-x]{7}$/;
 
@@ -15,14 +15,7 @@ export const toJSDate = (base60) => {
   const m5 = LOOKUP[base60[5]];
   const m6 = LOOKUP[base60[6]];
 
-  return new Date(Date.UTC(
-    m0 * 60 + m1,
-    m2,
-    m3 + 1,
-    m4,
-    m5,
-    m6
-  ));
+  return new Date(Date.UTC(m0 * 60 + m1, m2, m3 + 1, m4, m5, m6));
 };
 
 export const toBase60 = (date) => {
