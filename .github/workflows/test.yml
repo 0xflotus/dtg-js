@@ -25,7 +25,7 @@ jobs:
       - run: npm install
       - name: Check format
         run: npm run prettier:check
-  build:
+  test:
     name: Testing
     needs: format
     strategy:
@@ -39,6 +39,8 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install
+      - run: npm ci
       - name: Run tests
-        run: npm test
+        run: vitest --coverage.enabled true
+      - name: Report Coverage
+        uses: davelosert/vitest-coverage-report-action@v2
