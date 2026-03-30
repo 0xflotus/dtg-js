@@ -1,15 +1,15 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    environment: 'node',
-    reporters: 'verbose',
+    environment: "node",
+    reporters: "verbose",
     coverage: {
-      provider: 'v8',
-      include: ['index.js'],
-      exclude: ['node_modules', 'test', '**/*.test.js', '**/*.spec.js'],
-      reporter: ['text', 'html', 'json', 'lcov'],
-      reportsDirectory: './coverage',
+      provider: "v8",
+      include: ["index.js"],
+      exclude: ["node_modules", "test", "**/*.test.js", "**/*.spec.js"],
+      reporter: ["text", "html", "json", "lcov"],
+      reportsDirectory: "./coverage",
       lines: 80,
       functions: 80,
       branches: 75,
