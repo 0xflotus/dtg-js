@@ -12,6 +12,9 @@ on:
       - ".github/workflows/*.yml"
       - package.json
 
+permissions:
+  pull-requests: write
+
 jobs:
   format:
     name: Format Check
