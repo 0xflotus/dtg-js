@@ -19,7 +19,7 @@
   "description": "This library implements a date representation in base 60",
   "devDependencies": {
     "@vitest/coverage-v8": "4.1.8",
-    "prettier": "3.8.3",
+    "prettier": "3.8.4",
     "vitest": "4.1.8"
   }
 }
