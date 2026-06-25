@@ -20,7 +20,7 @@ jobs:
     name: Format Check
     runs-on: ubuntu-slim
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
@@ -37,7 +37,7 @@ jobs:
         node-version: [22, 24]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
