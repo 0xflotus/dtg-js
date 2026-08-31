@@ -9,7 +9,7 @@ on:
       - main
     paths:
       - "**.js"
-      - ".github/workflows/*.yml"
+      - ".github/**/*.yml"
       - package.json
 
 permissions:
