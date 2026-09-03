@@ -8,8 +8,8 @@ on:
     branches:
       - main
     paths:
-      - '**.js'
-      - '.github/**/*.yml'
+      - "**.js"
+      - ".github/**/*.yml"
       - package.json
 
 permissions:
