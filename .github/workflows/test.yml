@@ -8,8 +8,8 @@ on:
     branches:
       - main
     paths:
-      - "**.js"
-      - ".github/**/*.yml"
+      - '**.js'
+      - '.github/**/*.yml'
       - package.json
 
 permissions:
@@ -33,7 +33,15 @@ jobs:
     needs: format
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, macos-15, macos-26, macos-latest, windows-latest]
+        os:
+          [
+            ubuntu-latest,
+            ubuntu-24.04-arm,
+            macos-15,
+            macos-26,
+            macos-latest,
+            windows-latest,
+          ]
         node-version: [22, 24, 25, 26, latest]
     runs-on: ${{ matrix.os }}
     steps:
