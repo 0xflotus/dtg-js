@@ -12,11 +12,10 @@ updates:
       - 0xflotus
     open-pull-requests-limit: 10
     groups:
-      patch-updates:
-        update-types:
-          - "patch"
-      dev-dependencies:
-        dependency-type: development
+      vitest:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
