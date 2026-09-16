@@ -18,8 +18,8 @@
   "license": "MIT",
   "description": "This library implements a date representation in base 60",
   "devDependencies": {
-    "@vitest/coverage-v8": "5.0.0",
-    "prettier": "3.9.6",
-    "vitest": "5.0.0"
+    "@vitest/coverage-v8": "5.0.1",
+    "prettier": "3.9.7",
+    "vitest": "5.0.1"
   }
 }
