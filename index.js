@@ -1,29 +1,36 @@
 const TABLE = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx";
 
-const LOOKUP = new Uint8Array(128);
-for (let i = 0; i < TABLE.length; i++) {
-  LOOKUP[TABLE.charCodeAt(i)] = i;
-}
+const LOOKUP = Uint8Array.from(
+  [...TABLE].reduce((lookup, char, index) => {
+    lookup[char.charCodeAt(0)] = index;
+    return lookup;
+  }, new Uint8Array(128)),
+);
 
-export const toJSDate = (base60) => {
-  if (base60.length !== 7) {
+const decodeBase60 = (value) => {
+  if (value.length !== 7) {
     throw new Error("Invalid base60 length");
   }
 
-  const v = new Array(7);
+  return [...value].map((char) => {
+    const code = char.charCodeAt(0);
+    const decoded = code < LOOKUP.length ? LOOKUP[code] : undefined;
 
-  for (let i = 0; i < 7; i++) {
-    const code = base60.charCodeAt(i);
-    const val = LOOKUP[code];
-
-    if (val === 0 && base60[i] !== "0") {
-      throw new Error("Invalid character");
+    if (decoded === undefined || (decoded === 0 && char !== "0")) {
+      throw new Error(`Invalid character: ${char}`);
     }
 
-    v[i] = val;
-  }
+    return decoded;
+  });
+};
 
-  return new Date(Date.UTC(v[0] * 60 + v[1], v[2], v[3] + 1, v[4], v[5], v[6]));
+export const toJSDate = (base60) => {
+  const [hours, minutes, month, day, hour, minute, second] =
+    decodeBase60(base60);
+
+  return new Date(
+    Date.UTC(hours * 60 + minutes, month, day + 1, hour, minute, second),
+  );
 };
 
 export const toBase60 = (date) => {
@@ -31,17 +38,15 @@ export const toBase60 = (date) => {
     throw new Error('"date" is not a valid Date object');
   }
 
-  const year = date.getUTCFullYear();
+  const values = [
+    Math.floor(date.getUTCFullYear() / 60),
+    date.getUTCFullYear() % 60,
+    date.getUTCMonth(),
+    date.getUTCDate() - 1,
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds(),
+  ];
 
-  const chars = new Array(7);
-
-  chars[0] = TABLE[(year / 60) | 0];
-  chars[1] = TABLE[year % 60];
-  chars[2] = TABLE[date.getUTCMonth()];
-  chars[3] = TABLE[date.getUTCDate() - 1];
-  chars[4] = TABLE[date.getUTCHours()];
-  chars[5] = TABLE[date.getUTCMinutes()];
-  chars[6] = TABLE[date.getUTCSeconds()];
-
-  return chars.join("");
+  return values.map((value) => TABLE[value]).join("");
 };
