@@ -25,4 +25,7 @@ export default defineConfig({
     },
     globals: false,
   },
+  benchmark: {
+    include: ["test/**/*.bench.js"],
+  },
 });
