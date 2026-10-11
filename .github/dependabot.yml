@@ -7,7 +7,7 @@ updates:
       time: "06:00"
       timezone: "Europe/Berlin"
     cooldown:
-      default-days: 5
+      default-days: 2
     assignees:
       - 0xflotus
     open-pull-requests-limit: 10
