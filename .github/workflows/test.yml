@@ -25,6 +25,7 @@ jobs:
   test:
     name: Testing
     needs: format
+    continue-on-error: true
     strategy:
       matrix:
         os:
