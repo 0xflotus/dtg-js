@@ -41,7 +41,7 @@ jobs:
           - windows-2025
           - windows-11-arm
           - windows-latest
-        node-version: [22, 24, 25, 26, latest]
+        node-version: [22, 24, 25, 26, lts/*, latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
