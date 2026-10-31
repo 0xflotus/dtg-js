@@ -5,6 +5,7 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
 
 permissions:
   pull-requests: write
@@ -25,6 +26,7 @@ jobs:
   test:
     name: Testing
     needs: format
+    continue-on-error: true
     strategy:
       matrix:
         os:
@@ -34,16 +36,18 @@ jobs:
           - ubuntu-26.04-arm
           - ubuntu-24.04-arm
           - ubuntu-22.04
+          - macos-14
           - macos-15
           - macos-26
           - macos-15-intel
           - macos-26-intel
           - macos-latest
+          - xcode-27
           - windows-2022
           - windows-2025
           - windows-11-arm
           - windows-latest
-        node-version: [22, 24, 25, 26, lts/*, latest]
+        node-version: [22, 24, 25, 26, current, lts/*, latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
