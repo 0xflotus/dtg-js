@@ -14,7 +14,7 @@ const decodeBase60 = (value) => {
   for (let i = 0; i < 7; i++) {
     const code = value.charCodeAt(i);
     const val = code < 128 ? LOOKUP[code] : -1;
-    
+
     if (val === -1) {
       throw new Error(`Invalid character: ${value[i]}`);
     }
@@ -26,9 +26,7 @@ const decodeBase60 = (value) => {
 export const toJSDate = (base60) => {
   const d = decodeBase60(base60);
 
-  return new Date(
-    Date.UTC(d[0] * 60 + d[1], d[2], d[3] + 1, d[4], d[5], d[6])
-  );
+  return new Date(Date.UTC(d[0] * 60 + d[1], d[2], d[3] + 1, d[4], d[5], d[6]));
 };
 
 export const toBase60 = (date) => {
@@ -37,7 +35,7 @@ export const toBase60 = (date) => {
   }
 
   const year = date.getUTCFullYear();
-  
+
   return (
     TABLE[Math.floor(year / 60)] +
     TABLE[year % 60] +
