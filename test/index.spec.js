@@ -1,6 +1,9 @@
 import { describe, expect, it, test, vi } from "vitest";
 import { toBase60, toJSDate } from "../index";
 
+const BASE60_ALPHABET =
+  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx";
+
 describe("dtg-js", () => {
   describe("error handling", () => {
     test.each(["123", "12345678"])("invalid base 60 string length", (input) => {
@@ -13,6 +16,8 @@ describe("dtg-js", () => {
       ["XXXXXX!", "!"],
       ["Xj4LA?D", "?"],
       ["Xj4LAéD", "é"],
+      ["000000y", "y"],
+      ["000000z", "z"],
     ])("invalid characters in base 60 string", (input, character) => {
       expect(() => toJSDate(input)).toThrow(`Invalid character: ${character}`);
     });
@@ -48,19 +53,24 @@ describe("dtg-js", () => {
       expect(parsed).toEqual(d);
     });
 
-    test.each([
-      new Date(Date.UTC(0, 0, 1, 0, 0, 0)),
-      new Date(Date.UTC(3599, 11, 31, 23, 59, 59)),
-    ])("boundary year round-trip for %s", (date) => {
-      expect(toJSDate(toBase60(date))).toEqual(date);
-    });
+    const yearZero = new Date(0);
+    yearZero.setUTCFullYear(0, 0, 1);
+    yearZero.setUTCHours(0, 0, 0, 0);
 
-    it.each(
-      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx".split(""),
-    )("accepts valid base60 character %s", (character) => {
-      const value = toJSDate("0".repeat(6) + character);
-      expect(value instanceof Date).toBe(true);
-    });
+    test.each([yearZero, new Date(Date.UTC(3599, 11, 31, 23, 59, 59))])(
+      "boundary year round-trip for %s",
+      (date) => {
+        expect(toJSDate(toBase60(date))).toEqual(date);
+      },
+    );
+
+    it.each(BASE60_ALPHABET.split(""))(
+      "decodes valid base60 character %s to its value",
+      (character) => {
+        const value = toJSDate("0".repeat(6) + character);
+        expect(value.getUTCSeconds()).toBe(BASE60_ALPHABET.indexOf(character));
+      },
+    );
 
     test("round-trip conversion for mocked today's date", () => {
       vi.setSystemTime(new Date("2026-09-16T10:33:07.000Z"));
