@@ -25,8 +25,10 @@ const decodeBase60 = (value) => {
 
 export const toJSDate = (base60) => {
   const d = decodeBase60(base60);
-
-  return new Date(Date.UTC(d[0] * 60 + d[1], d[2], d[3] + 1, d[4], d[5], d[6]));
+  const date = new Date(0);
+  date.setUTCFullYear(d[0] * 60 + d[1], d[2], d[3] + 1);
+  date.setUTCHours(d[4], d[5], d[6], 0);
+  return date;
 };
 
 export const toBase60 = (date) => {
